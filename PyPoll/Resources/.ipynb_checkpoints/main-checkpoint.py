@@ -1,0 +1,133 @@
+{
+ "cells": [
+  {
+   "cell_type": "code",
+   "execution_count": 1,
+   "id": "7b24f84a",
+   "metadata": {},
+   "outputs": [
+    {
+     "name": "stdout",
+     "output_type": "stream",
+     "text": [
+      "Election Results\n",
+      "-------------------------\n",
+      "Total Votes: 369711\n",
+      "-------------------------\n",
+      "Charles Casper Stockham: 23.049% (85213)\n",
+      "Diana DeGette: 73.812% (272892)\n",
+      "Raymon Anthony Doane: 3.139% (11606)\n",
+      "-------------------------\n",
+      "Winner: Diana DeGette\n",
+      "-------------------------\n",
+      "analysis has been exporte to 'election_results.txt'.\n"
+     ]
+    }
+   ],
+   "source": [
+    "import csv\n",
+    "\n",
+    "# Read the CSV file and initialize variables\n",
+    "total_votes = 0\n",
+    "candidate_votes = {}\n",
+    "winner = \"\"\n",
+    "max_votes = 0\n",
+    "\n",
+    "# Open the CSV file\n",
+    "with open(\"election_data.csv\") as file:\n",
+    "    reader = csv.reader(file)\n",
+    "\n",
+    "    # Skip the header row\n",
+    "    next(reader)\n",
+    "\n",
+    "    # Process each row in the CSV file\n",
+    "    for row in reader:\n",
+    "        # Increment the total vote count\n",
+    "        total_votes += 1\n",
+    "\n",
+    "        # Get the candidate's name from the row\n",
+    "        candidate = row[2]\n",
+    "\n",
+    "        # Add the candidate to the dictionary if not already present\n",
+    "        if candidate not in candidate_votes:\n",
+    "            candidate_votes[candidate] = 0\n",
+    "\n",
+    "        # Increment the candidate's vote count\n",
+    "        candidate_votes[candidate] += 1\n",
+    "\n",
+    "        # Check if the current candidate has more votes than the previous winner\n",
+    "        if candidate_votes[candidate] > max_votes:\n",
+    "            winner = candidate\n",
+    "            max_votes = candidate_votes[candidate]\n",
+    "\n",
+    "# Calculate the percentage of votes for each candidate\n",
+    "candidate_percentages = {\n",
+    "    candidate: (votes / total_votes) * 100\n",
+    "    for candidate, votes in candidate_votes.items()\n",
+    "}\n",
+    "\n",
+    "# Format the results as strings\n",
+    "total_votes_str = f\"Total Votes: {total_votes}\"\n",
+    "candidate_results = [\n",
+    "    f\"{candidate}: {candidate_percentages[candidate]:.3f}% ({votes})\"\n",
+    "    for candidate, votes in candidate_votes.items()\n",
+    "]\n",
+    "winner_str = f\"Winner: {winner}\"\n",
+    "\n",
+    "# Print the analysis to the terminal\n",
+    "print(\"Election Results\")\n",
+    "print(\"-------------------------\")\n",
+    "print(total_votes_str)\n",
+    "print(\"-------------------------\")\n",
+    "for result in candidate_results:\n",
+    "    print(result)\n",
+    "print(\"-------------------------\")\n",
+    "print(winner_str)\n",
+    "print(\"-------------------------\")\n",
+    "\n",
+    "# Export the analysis to a text file\n",
+    "with open(\"election_results.txt\", \"w\") as file:\n",
+    "    file.write(\"Election Results\\n\")\n",
+    "    file.write(\"-------------------------\\n\")\n",
+    "    file.write(total_votes_str + \"\\n\")\n",
+    "    file.write(\"-------------------------\\n\")\n",
+    "    for result in candidate_results:\n",
+    "        file.write(result + \"\\n\")\n",
+    "    file.write(\"-------------------------\\n\")\n",
+    "    file.write(winner_str + \"\\n\")\n",
+    "    file.write(\"-------------------------\\n\")\n",
+    "\n",
+    "print(\"analysis has been exporte to 'election_results.txt'.\")\n"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "id": "a6281d84",
+   "metadata": {},
+   "outputs": [],
+   "source": []
+  }
+ ],
+ "metadata": {
+  "kernelspec": {
+   "display_name": "Python 3 (ipykernel)",
+   "language": "python",
+   "name": "python3"
+  },
+  "language_info": {
+   "codemirror_mode": {
+    "name": "ipython",
+    "version": 3
+   },
+   "file_extension": ".py",
+   "mimetype": "text/x-python",
+   "name": "python",
+   "nbconvert_exporter": "python",
+   "pygments_lexer": "ipython3",
+   "version": "3.10.9"
+  }
+ },
+ "nbformat": 4,
+ "nbformat_minor": 5
+}

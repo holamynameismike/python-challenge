@@ -1,0 +1,117 @@
+{
+ "cells": [
+  {
+   "cell_type": "code",
+   "execution_count": 3,
+   "id": "753cc7d5",
+   "metadata": {},
+   "outputs": [
+    {
+     "name": "stdout",
+     "output_type": "stream",
+     "text": [
+      "\n",
+      "Financial Analysi\n",
+      "----------------------------\n",
+      "Total Months: 86\n",
+      "Total: $22564198\n",
+      "Average Change: $-8311.11\n",
+      "Greatest Increase in Profits: Aug-16 ($1862002)\n",
+      "Greatest Decrease in Profits: Feb-14 ($-1825558)\n",
+      "\n"
+     ]
+    }
+   ],
+   "source": [
+    "import csv\n",
+    "\n",
+    "# Read the CSV file\n",
+    "with open('budget_data.csv', 'r') as file:\n",
+    "    csvreader = csv.reader(file)\n",
+    "    \n",
+    "    # Skip the header row\n",
+    "    header = next(csvreader)\n",
+    "    \n",
+    "    # Initialize variables\n",
+    "    total_months = 0\n",
+    "    net_total = 0\n",
+    "    prev_profit = 0\n",
+    "    total_change = 0\n",
+    "    greatest_increase = ['', 0]\n",
+    "    greatest_decrease = ['', 0]\n",
+    "    \n",
+    "    # Iterate over each row in the CSV\n",
+    "    for row in csvreader:\n",
+    "        # Count the number of months\n",
+    "        total_months += 1\n",
+    "        \n",
+    "        # Calculate the net total\n",
+    "        profit = int(row[1])\n",
+    "        net_total += profit\n",
+    "        \n",
+    "        # Calculate the change in profit from the previous month\n",
+    "        if total_months > 1:\n",
+    "            change = profit - prev_profit\n",
+    "            total_change += change\n",
+    "            \n",
+    "            # Check for the greatest increase and decrease in profits\n",
+    "            if change > greatest_increase[1]:\n",
+    "                greatest_increase = [row[0], change]\n",
+    "            if change < greatest_decrease[1]:\n",
+    "                greatest_decrease = [row[0], change]\n",
+    "        \n",
+    "        prev_profit = profit\n",
+    "\n",
+    "# Calculate the average change\n",
+    "average_change = total_change / (total_months - 1)\n",
+    "\n",
+    "# Generate the analysis output\n",
+    "analysis_output = f'''\n",
+    "Financial Analysi\n",
+    "----------------------------\n",
+    "Total Months: {total_months}\n",
+    "Total: ${net_total}\n",
+    "Average Change: ${average_change:.2f}\n",
+    "Greatest Increase in Profits: {greatest_increase[0]} (${greatest_increase[1]})\n",
+    "Greatest Decrease in Profits: {greatest_decrease[0]} (${greatest_decrease[1]})\n",
+    "'''\n",
+    "\n",
+    "# Print the analysis to the terminal\n",
+    "print(analysis_output)\n",
+    "\n",
+    "# Export the results to a text file\n",
+    "with open('financial_analysis.txt', 'w') as output_file:\n",
+    "    output_file.write(analysis_output)\n"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "id": "83238d33",
+   "metadata": {},
+   "outputs": [],
+   "source": []
+  }
+ ],
+ "metadata": {
+  "kernelspec": {
+   "display_name": "Python 3 (ipykernel)",
+   "language": "python",
+   "name": "python3"
+  },
+  "language_info": {
+   "codemirror_mode": {
+    "name": "ipython",
+    "version": 3
+   },
+   "file_extension": ".py",
+   "mimetype": "text/x-python",
+   "name": "python",
+   "nbconvert_exporter": "python",
+   "pygments_lexer": "ipython3",
+   "version": "3.10.9"
+  }
+ },
+ "nbformat": 4,
+ "nbformat_minor": 5
+}
